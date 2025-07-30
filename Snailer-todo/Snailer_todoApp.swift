@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct Snailer_todoApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }
