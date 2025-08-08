@@ -1,15 +1,12 @@
 diff --git a/Models/Task.swift b/Models/Task.swift
 --- a/Models/Task.swift
 +++ b/Models/Task.swift
---- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.original	2025-08-07 20:01:11
-+++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.updated	2025-08-07 20:01:11
-@@ -11,3 +11,15 @@
-     self.isCompleted = isCompleted
-   }
- }
-+
-+struct Task: Identifiable, Codable {
-+  let id: UUID
+--- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.original	2025-08-07 20:32:17
++++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.updated	2025-08-07 20:32:17
+@@ -2,6 +2,18 @@
+ 
+ struct Task: Identifiable, Codable {
+   let id: UUID
 +  var title: String
 +  var isCompleted: Bool
 +
@@ -19,3 +16,9 @@ diff --git a/Models/Task.swift b/Models/Task.swift
 +    self.isCompleted = isCompleted
 +  }
 +}
++
++struct Task: Identifiable, Codable {
++  let id: UUID
+   let title: String
+   var isCompleted: Bool
+ 
