@@ -1,13 +1,13 @@
 diff --git a/Models/Task.swift b/Models/Task.swift
 --- a/Models/Task.swift
 +++ b/Models/Task.swift
---- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.original	2025-08-07 20:21:16
-+++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.updated	2025-08-07 20:21:16
+--- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.original	2025-08-07 20:32:17
++++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/Task.updated	2025-08-07 20:32:17
 @@ -2,6 +2,18 @@
  
  struct Task: Identifiable, Codable {
    let id: UUID
-+  let title: String
++  var title: String
 +  var isCompleted: Bool
 +
 +  init(id: UUID = UUID(), title: String, isCompleted: Bool = false) {
@@ -19,6 +19,6 @@ diff --git a/Models/Task.swift b/Models/Task.swift
 +
 +struct Task: Identifiable, Codable {
 +  let id: UUID
-   var title: String
+   let title: String
    var isCompleted: Bool
  

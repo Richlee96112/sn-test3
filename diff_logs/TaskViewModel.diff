@@ -1,42 +1,40 @@
 diff --git a/ViewModels/TaskViewModel.swift b/ViewModels/TaskViewModel.swift
 --- a/ViewModels/TaskViewModel.swift
 +++ b/ViewModels/TaskViewModel.swift
---- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.original	2025-08-07 20:22:23
-+++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.updated	2025-08-07 20:22:23
-@@ -1,6 +1,36 @@
- import Foundation
+--- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.original	2025-08-07 20:34:27
++++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.updated	2025-08-07 20:34:27
+@@ -2,6 +2,34 @@
  
  class TaskViewModel: ObservableObject {
-+  @Published private(set) var tasks: [Task] = []
-+  private let userDefaultsManager = UserDefaultsManager.shared
+   @Published private(set) var tasks: [Task] = []
++  private let userDefaultsManager = UserDefaultsManager()
 +
 +  init() {
 +    tasks = userDefaultsManager.loadTasks()
 +  }
 +
 +  func addTask(_ title: String) {
++    guard !title.isEmpty else { return }
 +    let task = Task(title: title)
 +    tasks.append(task)
-+    saveTasks()
++    userDefaultsManager.saveTasks(tasks)
 +  }
 +
 +  func toggleTask(_ task: Task) {
-+    guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
-+    tasks[index] = Task(id: task.id, title: task.title, isCompleted: !task.isCompleted)
-+    saveTasks()
++    if let index = tasks.firstIndex(where: { $0.id == task.id }) {
++      tasks[index].isCompleted.toggle()
++      userDefaultsManager.saveTasks(tasks)
++    }
 +  }
 +
 +  func deleteTask(_ task: Task) {
 +    tasks.removeAll { $0.id == task.id }
-+    saveTasks()
-+  }
-+
-+  private func saveTasks() {
 +    userDefaultsManager.saveTasks(tasks)
 +  }
 +}
 +
 +class TaskViewModel: ObservableObject {
-   @Published var tasks: [Task] = []
-   @Published var newTaskTitle: String = ""
++  @Published private(set) var tasks: [Task] = []
+   private let userDefaultsManager = UserDefaultsManager.shared
  
+   init() {
