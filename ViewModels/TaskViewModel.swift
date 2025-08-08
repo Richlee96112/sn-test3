@@ -1,6 +1,36 @@
 import Foundation
 
 class TaskViewModel: ObservableObject {
+  @Published private(set) var tasks: [Task] = []
+  private let userDefaultsManager = UserDefaultsManager.shared
+
+  init() {
+    tasks = userDefaultsManager.loadTasks()
+  }
+
+  func addTask(_ title: String) {
+    let task = Task(title: title)
+    tasks.append(task)
+    saveTasks()
+  }
+
+  func toggleTask(_ task: Task) {
+    guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+    tasks[index] = Task(id: task.id, title: task.title, isCompleted: !task.isCompleted)
+    saveTasks()
+  }
+
+  func deleteTask(_ task: Task) {
+    tasks.removeAll { $0.id == task.id }
+    saveTasks()
+  }
+
+  private func saveTasks() {
+    userDefaultsManager.saveTasks(tasks)
+  }
+}
+
+class TaskViewModel: ObservableObject {
   @Published var tasks: [Task] = []
   @Published var newTaskTitle: String = ""
 

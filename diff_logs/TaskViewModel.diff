@@ -1,34 +1,29 @@
 diff --git a/ViewModels/TaskViewModel.swift b/ViewModels/TaskViewModel.swift
 --- a/ViewModels/TaskViewModel.swift
 +++ b/ViewModels/TaskViewModel.swift
---- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.original	2025-08-07 20:01:45
-+++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.updated	2025-08-07 20:01:45
-@@ -1,6 +1,51 @@
+--- /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.original	2025-08-07 20:22:23
++++ /Users/gitaeklee/Desktop/study/Snailer-Test2/Snailer-todo/diff_logs/TaskViewModel.updated	2025-08-07 20:22:23
+@@ -1,6 +1,36 @@
  import Foundation
  
  class TaskViewModel: ObservableObject {
-+  @Published var tasks: [Task] = []
-+  @Published var newTaskTitle: String = ""
-+
-+  private let tasksKey = "tasks"
++  @Published private(set) var tasks: [Task] = []
++  private let userDefaultsManager = UserDefaultsManager.shared
 +
 +  init() {
-+    loadTasks()
++    tasks = userDefaultsManager.loadTasks()
 +  }
 +
-+  func addTask() {
-+    guard !newTaskTitle.isEmpty else { return }
-+    let task = Task(title: newTaskTitle)
++  func addTask(_ title: String) {
++    let task = Task(title: title)
 +    tasks.append(task)
-+    newTaskTitle = ""
 +    saveTasks()
 +  }
 +
 +  func toggleTask(_ task: Task) {
-+    if let index = tasks.firstIndex(where: { $0.id == task.id }) {
-+      tasks[index].isCompleted.toggle()
-+      saveTasks()
-+    }
++    guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
++    tasks[index] = Task(id: task.id, title: task.title, isCompleted: !task.isCompleted)
++    saveTasks()
 +  }
 +
 +  func deleteTask(_ task: Task) {
@@ -37,21 +32,11 @@ diff --git a/ViewModels/TaskViewModel.swift b/ViewModels/TaskViewModel.swift
 +  }
 +
 +  private func saveTasks() {
-+    if let encoded = try? JSONEncoder().encode(tasks) {
-+      UserDefaults.standard.set(encoded, forKey: tasksKey)
-+    }
-+  }
-+
-+  private func loadTasks() {
-+    if let data = UserDefaults.standard.data(forKey: tasksKey),
-+      let decoded = try? JSONDecoder().decode([Task].self, from: data)
-+    {
-+      tasks = decoded
-+    }
++    userDefaultsManager.saveTasks(tasks)
 +  }
 +}
 +
 +class TaskViewModel: ObservableObject {
-   @Published private(set) var tasks: [Task] = []
-   private let userDefaultsManager = UserDefaultsManager()
+   @Published var tasks: [Task] = []
+   @Published var newTaskTitle: String = ""
  
